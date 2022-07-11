@@ -1,0 +1,75 @@
+﻿@model List<Room>
+@{
+    ViewData["Title"] = "Room Page";
+    Layout = "_CustomLayout";
+}
+<section>
+<div >
+    <div style="position:fixed;z-index:2">      
+            <div class="alert alert-success alert-dismissable" id="SucessAlert" style="display:none;">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                Success! Product Added successfully.
+            </div>
+            <div class="alert alert-danger alert-dismissable" id="FailedAlert" style="display:none;">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                Failed ! Room Already Exists .
+            </div>
+    </div>
+</div>
+</section>
+<section class="mt-4 container">
+    @if(!Model.Any())
+    {
+        <div class="alert alert-danger" role="alert">
+        <i class="bi bi-radioactive"></i> No rooms found !
+        </div>
+    }
+    else{
+        @foreach (var item in @Model)
+        {
+            <div class="card mt-4" style="width: 17rem;display:inline-block;">
+                <div class="card-body">
+                    <h5 class="card-title text-center">@item.Branch.Name</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@item.Price$</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">@item.Status</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Type: @item.Room_Type.TypeRoom</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Capacity: @item.Room_Type.Capacity</h6>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+@*                    <a asp-controller="Reservation" asp-action="SetRoomInfo" asp-route-roomId=@item.Id asp-route-BranchId=@item.Branch.Id class="card-link btn btn-primary">Make Book</a>
+*@                    <button  onclick="MakeReservation(@item.Id,@item.Branch.Id)" class="card-link btn btn-primary">Make Book</button>
+                    <a asp-controller="Branch" asp-action="index" class="card-link btn btn-primary">Branches</a>
+                </div>
+            </div>
+        }
+    }
+</section>
+
+@section Scripts{
+    <script>
+        function MakeReservation(roomId,branchId)
+        {
+            var roomID = parseInt(roomId); 
+            var banchID = parseInt(branchId); 
+      $.ajax({
+        url: "/Reservation/SetRoomInfo",
+        data:{"roomId":roomID,"branchId":banchID},
+        success: function(result)
+        {
+            if(!result)
+            {
+                window.location = "@Url.Action("OpenFormRoomInfo", "Reservation")";
+            }
+            else if(result)
+            {
+                $("#SucessAlert").hide();
+                $("#FailedAlert").show();
+            }
+            else if(result == "UnAuth")
+            {
+                window.location = "@Url.Action("Login", "Account")";
+            }
+        }
+        });
+        }
+    </script>
+}

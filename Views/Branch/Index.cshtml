@@ -1,0 +1,29 @@
+﻿@model List<Branch>
+
+@{
+    ViewData["Title"] = "Branch Page";
+    Layout = "_CustomLayout";
+}
+<section class="mt-4 container">
+    @if(!@Model.Any())
+    {
+        <div class="alert alert-danger" role="alert">
+        <i class="bi bi-radioactive"></i> No branch found !
+        </div>
+    }
+    else
+    {
+         @foreach (var item in @Model)
+            {
+                <div class="card mt-4" style="width: 17rem;display:inline-block;">
+                    <div class="card-body">
+                        <h4 class="card-title text-center">@item.Name</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">Location: @item.Location</h6>
+                        <h6 class="card-subtitle mb-2 text-muted">City: @item.City</h6>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <a asp-controller="Room" asp-action="GetAllRoomInOneBranch" asp-route-branchId="@item.Id" class="card-link btn btn-primary ">Room Avialable</a>
+                    </div>
+                </div>
+            }
+    }
+</section>
