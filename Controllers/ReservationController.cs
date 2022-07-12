@@ -18,6 +18,25 @@ namespace BookingHotel_MVC.Controllers
         {
             return View();
         }
+        public IActionResult OpenEditReservation(int id)
+        {
+            var data= serviceReservation.GetTempRoomByID(id);
+            return View(data);
+        }
+        public IActionResult EditReservation(int id,ReservationRoomModel reservationRoomModel)
+        {
+            var response= serviceReservation.EditTempRoom(id, reservationRoomModel);
+            if(response>0)
+            {
+                return RedirectToAction("GetAllTempGuest");
+            }
+            else
+            {
+                var data = serviceReservation.GetTempRoomByID(id);
+
+                return View("OpenEditReservation", data);
+            }
+        }
         public IActionResult SetRoomInfo(int roomId,int branchId)
         {
             TempData["RoomId"] = roomId;

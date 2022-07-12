@@ -1,5 +1,10 @@
 ﻿using BookingHotel_MVC.Models;
 using BookingHotel_MVC.ViewModel;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.JsonPatch.Operations;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.Text;
 
 namespace BookingHotel_MVC.Service
 {
@@ -59,6 +64,26 @@ namespace BookingHotel_MVC.Service
                 new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             HttpResponseMessage httpResponse = httpClient.DeleteAsync("/api/TempGuestRoom?id="+id).Result;
             bool response = httpResponse.Content.ReadAsAsync<bool>().Result;
+            return response;
+        }
+        public ReservationRoomModel GetTempRoomByID(int id)
+        {
+            httpClient.BaseAddress = new Uri(baseUrl);
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            HttpResponseMessage httpResponse = httpClient.GetAsync("api/TempGuestRoom/GetTempRoomByID?id=" + id).Result;
+            ReservationRoomModel response = httpResponse.Content.ReadAsAsync<ReservationRoomModel>().Result;
+            return response;
+        }
+
+        public  int EditTempRoom(int id, ReservationRoomModel model)
+        {
+            httpClient.BaseAddress = new Uri(baseUrl);
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        
+            HttpResponseMessage httpResponse = httpClient.PutAsJsonAsync("api/TempGuestRoom?id="+id, model).Result;
+            int response = httpResponse.Content.ReadAsAsync<int>().Result;
             return response;
         }
     }

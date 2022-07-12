@@ -9,6 +9,8 @@ builder.Services.AddScoped<IServiceBranch,BranchService>();
 builder.Services.AddScoped<IServiceRoom,RoomService>();
 builder.Services.AddScoped<IServiceReservation,ReservationService>();
 builder.Services.AddScoped<IServiceAccount,AccountService>();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson();
 var app = builder.Build();
 
 

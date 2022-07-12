@@ -9,7 +9,7 @@
     @if(!Model.Any())
     {
         <div class="alert alert-danger" role="alert">
-        <i class="bi bi-radioactive"></i> No branch found !
+        <i class="bi bi-radioactive"></i> No Rooms found !
         </div>
     }
         else
@@ -23,6 +23,12 @@
               <h4 class="card-title">@item.DateOut</h4>
               <h4 class="card-title">@item.NumberOfDays</h4>
               <p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>
+              <div class="mt-4">
+               <a asp-action="OpenEditReservation" asp-controller="Reservation" asp-route-id=@item.Id class="btn btn-primary">Edit</a>
+              </div>
+               <div class="mt-4">
+               <a asp-action="OpenEditReservation" asp-controller="Reservation" class="btn btn-primary">Delete</a>
+              </div>
             </div>
           </div>
          }
